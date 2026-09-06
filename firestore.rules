@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidEntry(data) {
+      return data.keys().hasAll(['rawText', 'reflectWithMe', 'createdAt'])
+        && data.rawText is string
+        && data.rawText.size() <= 50000
+        && data.reflectWithMe is bool
+        && (data.mood == null || (data.mood is string && data.mood in [
+          'calm', 'content', 'energized', 'frustrated', 'anxious', 'drained', 'low', 'numb'
+        ]))
+        && (data.summary == null || (data.summary is string && data.summary.size() <= 2000))
+        && (data.createdAt is timestamp || data.createdAt is string);
+    }
+
+    function isValidProfile(data) {
+      return data.theme is string
+        && data.theme in ['day', 'evening', 'system'];
+    }
+
+    match /users/{userId} {
+      match /profile/{docId} {
+        allow read: if isOwner(userId) && isValidId(docId);
+        allow create, update: if isOwner(userId) && isValidId(docId) && isValidProfile(incoming());
+        allow delete: if isOwner(userId) && isValidId(docId);
+      }
+
+      match /entries/{entryId} {
+        allow get: if isOwner(userId) && isValidId(entryId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidId(entryId) && isValidEntry(incoming());
+        allow update: if isOwner(userId) && isValidId(entryId) && isValidEntry(incoming())
+          && incoming().createdAt == existing().createdAt;
+        allow delete: if isOwner(userId) && isValidId(entryId);
+      }
+    }
+  }
+}

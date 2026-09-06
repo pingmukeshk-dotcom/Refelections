@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Newsreader', Georgia, serif;
+    --font-sans: 'Figtree', system-ui, -apple-system, sans-serif;
+
+    /* Day Theme: Warm aged-amber paper */
+    --bg-journal: #F4EFE6;
+    --bg-card: #FAF7F2;
+    --bg-card-hover: #F2EDE4;
+    --bg-input: #FAF7F2;
+    --border-journal: #DDD3C1;
+    --border-card: #E4DACB;
+
+    --ink-primary: #231F1D;
+    --ink-secondary: #4A433E;
+    --ink-muted: #7C736A;
+
+    --accent-gold: #B4821E;
+    --accent-gold-hover: #9E7118;
+    --accent-gold-subtle: #F2E8D3;
+    
+    --accent-teal: #3D6A6D;
+    --accent-teal-subtle: #E3ECEC;
+    --accent-teal-hover: #31575A;
+
+    --shadow-soft: 0 4px 20px -2px rgba(45, 36, 28, 0.06);
+    --shadow-elevated: 0 10px 30px -4px rgba(45, 36, 28, 0.1);
+  }
+
+  .dark, .theme-evening {
+    /* Evening Theme: Warm brown-black */
+    --bg-journal: #181412;
+    --bg-card: #221D1A;
+    --bg-card-hover: #2B2521;
+    --bg-input: #1F1A17;
+    --border-journal: #342C27;
+    --border-card: #3D342E;
+
+    --ink-primary: #EDE6DC;
+    --ink-secondary: #BAAFA4;
+    --ink-muted: #877D73;
+
+    --accent-gold: #DFAB42;
+    --accent-gold-hover: #EBB854;
+    --accent-gold-subtle: #2F2617;
+
+    --accent-teal: #68A1A4;
+    --accent-teal-subtle: #192729;
+    --accent-teal-hover: #7EB5B8;
+
+    --shadow-soft: 0 4px 24px -2px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 12px 36px -4px rgba(0, 0, 0, 0.55);
+  }
+
+  body {
+    background-color: var(--bg-journal);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+}
+
+.font-serif-journal {
+  font-family: var(--font-serif);
+}
+
+.font-sans-journal {
+  font-family: var(--font-sans);
+}
+
+/* Journal texture / paper feel */
+.journal-canvas {
+  background-color: var(--bg-journal);
+  background-image: radial-gradient(var(--border-journal) 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
+}
+
+/* Custom scrollbars that feel like paper edges */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-journal);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-muted);
+}

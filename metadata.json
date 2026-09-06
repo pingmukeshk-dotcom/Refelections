@@ -1,0 +1,8 @@
+{
+  "name": "Reflections",
+  "description": "A private journaling app where the user writes solo and AI works only at the edges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

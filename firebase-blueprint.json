@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "Entry": {
+      "title": "Entry",
+      "description": "A single private journal entry written by the user",
+      "type": "object",
+      "properties": {
+        "rawText": {
+          "type": "string",
+          "description": "Verbatim text of the journal entry, never modified by AI"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Short condensed summary created by Gemini if reflectWithMe is enabled"
+        },
+        "mood": {
+          "type": "string",
+          "enum": [
+            "calm",
+            "content",
+            "energized",
+            "frustrated",
+            "anxious",
+            "drained",
+            "low",
+            "numb"
+          ],
+          "description": "User confirmed mood for the entry"
+        },
+        "reflectWithMe": {
+          "type": "boolean",
+          "description": "Whether AI reflection was opted into for this entry"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the entry was recorded"
+        }
+      },
+      "required": [
+        "rawText",
+        "reflectWithMe",
+        "createdAt"
+      ]
+    },
+    "Profile": {
+      "title": "Profile",
+      "description": "User profile and visual theme preference",
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": [
+            "day",
+            "evening",
+            "system"
+          ],
+          "description": "Theme preference for the worn journal interface"
+        }
+      },
+      "required": [
+        "theme"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/entries/{entryId}": {
+      "schema": "Entry",
+      "description": "Private journal entries isolated per user"
+    },
+    "/users/{userId}/profile/{profileId}": {
+      "schema": "Profile",
+      "description": "User settings and theme preferences"
+    }
+  }
+}
